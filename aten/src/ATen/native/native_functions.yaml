@@ -2346,6 +2346,11 @@
   dispatch:
     CPU, CUDA: neg_out
 
+- func: nbytes(Tensor self) -> int
+  use_c10_dispatcher: full
+  variants: function, method
+  device_guard: False
+
 - func: repeat(Tensor self, int[] repeats) -> Tensor
   use_c10_dispatcher: full
   variants: method  # This is method-only to match the previous tensor API. In the future we could make this a function too.

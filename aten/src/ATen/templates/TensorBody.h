@@ -236,19 +236,6 @@ class CAFFE2_API Tensor {
     return at::MemoryFormat::Contiguous;
   }
 
-  // Total bytes consumed by the "view" of elements of the array.  Does not
-  // include size of metadata.  The number reported here does not necessarily
-  // correspond to the true physical memory consumed by a tensor; instead,
-  // it reports the memory the tensor would take *if* it were contiguous.
-  // Defined to be numel() * itemsize()
-  size_t nbytes() const {
-    TORCH_CHECK(layout () != at::kSparse,
-                "nbytes is not defined for sparse tensors.  If you want the size of the constituent " \
-                "tensors, add the nbytes of the indices and values.  If you want the size of the  " \
-                "equivalent dense tensor, multiply numel() by element_size()");
-    return impl_->numel() * impl_->itemsize();
-  }
-
   int64_t numel() const {
     return impl_->numel();
   }

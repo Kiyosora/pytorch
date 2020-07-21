@@ -311,6 +311,7 @@ TORCH_LIBRARY_IMPL(aten, Named, m) {
   m.impl("mv.out", CppFunction::makeFallthrough());
   m.impl("narrow", CppFunction::makeFallthrough());
   m.impl("narrow.Tensor", CppFunction::makeFallthrough());
+  m.impl("nbytes", CppFunction::makeFallthrough());
   m.impl("ne.Scalar", CppFunction::makeFallthrough());
   m.impl("ne.Scalar_out", CppFunction::makeFallthrough());
   m.impl("ne.Tensor", CppFunction::makeFallthrough());

@@ -24,6 +24,7 @@ Tensors
     set_default_dtype
     get_default_dtype
     set_default_tensor_type
+    nbytes
     numel
     set_printoptions
     set_flush_denormal

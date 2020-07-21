@@ -520,6 +520,7 @@ _(aten, native_pow) \
 _(aten, native_resize_as) \
 _(aten, native_tensor) \
 _(aten, native_zero) \
+_(aten, nbytes) \
 _(aten, ne) \
 _(aten, neg) \
 _(aten, bitwise_and) \

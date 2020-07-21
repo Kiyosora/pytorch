@@ -105,5 +105,9 @@ bool is_set_to(const Tensor& self, const Tensor& src) {
   return false;
 }
 
+int64_t nbytes(const Tensor& self) {
+  return self.numel() * self.itemsize();
+}
+
 } // namespace native
 } // namespace at
