@@ -965,6 +965,24 @@
 - func: conv_transpose3d.input(Tensor input, Tensor weight, Tensor? bias=None, int[3] stride=1, int[3] padding=0, int[3] output_padding=0, int groups=1, int[3] dilation=1) -> Tensor
   use_c10_dispatcher: full
 
+- func: copysign.out(Tensor self, *, Tensor(a!) out) -> Tensor(a!)
+  dispatch:
+  CPU, CUDA: copysign_out
+
+- func: copysign.Tensor(Tensor self, Tensor sign) -> Tensor
+  use_c10_dispatcher: full
+  dispatch: function, method
+
+- func: copysign_.Tensor(Tensor(a!) self, Tensor sign) -> Tensor(a!)
+  variants: method
+
+- func: copysign.Scalar(Tensor self, Scalar sign) -> Tensor
+  use_c10_dispatcher: full
+  dispatch: function, method
+
+- func: copysign_.Scalar(Tensor(a!) self, Scalar sign) -> Tensor(a!)
+  variants: method
+
 - func: copy_(Tensor(a!) self, Tensor src, bool non_blocking=False) -> Tensor(a!)
   use_c10_dispatcher: full
   variants: method

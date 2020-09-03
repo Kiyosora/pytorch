@@ -48,6 +48,7 @@ DEFINE_DISPATCH(lcm_stub);
 DEFINE_DISPATCH(hypot_stub);
 DEFINE_DISPATCH(nextafter_stub);
 DEFINE_DISPATCH(heaviside_stub);
+DEFINE_DISPATCH(copysign_stub);
 
 static Tensor wrapped_scalar_tensor(Scalar scalar) {
   auto tensor = scalar_to_tensor(scalar);
@@ -978,6 +979,23 @@ Tensor heaviside(const Tensor& self, const Tensor& values) {
 
 Tensor& heaviside_(Tensor& self, const Tensor& values) {
   return at::heaviside_out(self, self, values);
+}
+
+Tensor& copysign_out(Tensor& result, const Tensor& sign) {
+  auto iter = TensorIterator::binary_op(result, self, sign);
+  copysign_stub(iter.device_type(), iter);
+  return result;
+}
+
+Tensor copysign(const Tensor& self, const Tensor& sign) {
+  Tensor result;
+  auto iter = TensorIterator::binary_op(result, self, sign);
+  copysign_stub(iter.device_type(), iter);
+  return iter.output();
+}
+
+Tensor& copysign_(Tensor& self, const Tensor& sign) {
+  return at::copysign_out(self, self, sign);
 }
 
 // TODO: Deduplicate this with the TensorIterator logic.  This would
