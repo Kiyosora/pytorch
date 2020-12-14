@@ -362,6 +362,8 @@ Reduction Ops
     amin
     max
     min
+    fmax
+    fmin
     dist
     logsumexp
     mean
