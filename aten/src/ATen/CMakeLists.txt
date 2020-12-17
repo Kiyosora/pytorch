@@ -17,7 +17,7 @@ if(NOT AT_INSTALL_BIN_DIR OR NOT AT_INSTALL_LIB_DIR OR NOT AT_INSTALL_INCLUDE_DI
 endif()
 
 # this flag is used in Config but set externally, we must normalize it
-# to 0/1 otherwise `#if ON` will be evaluated to false.
+# to 0/1 otherwise `#if ON` will be evaluated file(GLOB native_mkldnn_cpp "native/mkldnn/*.cpp")to false.
 if(CAFFE2_STATIC_LINK_CUDA)
   set(CAFFE2_STATIC_LINK_CUDA_INT 1)
 else()
@@ -64,6 +64,7 @@ file(GLOB mkldnn_cpp "mkldnn/*.cpp")
 file(GLOB native_cpp "native/*.cpp")
 file(GLOB native_mkl_cpp "native/mkl/*.cpp")
 file(GLOB native_mkldnn_cpp "native/mkldnn/*.cpp")
+file(GLOB native_ampl_cpp "native/ampl/*.cpp")
 file(GLOB vulkan_cpp "vulkan/*.cpp")
 file(GLOB native_vulkan_cpp "native/vulkan/*.cpp" "native/vulkan/api/*.cpp" "native/vulkan/ops/*.cpp")
 
@@ -116,7 +117,7 @@ append_filelist("jit_core_sources" ATen_CORE_SRCS)
 
 add_subdirectory(quantized)
 add_subdirectory(nnapi)
-set(all_cpu_cpp ${base_cpp} ${ATen_CORE_SRCS} ${native_cpp} ${native_sparse_cpp} ${native_quantized_cpp} ${native_mkl_cpp} ${native_mkldnn_cpp} ${native_utils_cpp} ${native_xnnpack} ${generated_cpp} ${core_generated_cpp} ${ATen_CPU_SRCS} ${ATen_QUANTIZED_SRCS} ${ATen_NNAPI_SRCS} ${cpu_kernel_cpp})
+set(all_cpu_cpp ${base_cpp} ${ATen_CORE_SRCS} ${native_cpp} ${native_sparse_cpp} ${native_quantized_cpp} ${native_mkl_cpp} ${native_mkldnn_cpp} ${native_utils_cpp} ${native_ampl_cpp} ${native_xnnpack} ${generated_cpp} ${core_generated_cpp} ${ATen_CPU_SRCS} ${ATen_QUANTIZED_SRCS} ${ATen_NNAPI_SRCS} ${cpu_kernel_cpp})
 if(AT_MKL_ENABLED)
   set(all_cpu_cpp ${all_cpu_cpp} ${mkl_cpp})
 endif()
