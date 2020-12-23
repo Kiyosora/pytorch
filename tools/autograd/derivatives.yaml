@@ -704,6 +704,10 @@
   self: grad.clone().masked_fill_(self <= other, 0)
   other: grad.clone().masked_fill_(self > other, 0)
 
+- name: fmax(Tensor self, Tensor other) -> Tensor
+  self: grad.clone().masked_fill_(self <= other, 0)
+  other: grad.clone().masked_fill_(self > other, 0)
+
 - name: mean(Tensor self, *, ScalarType? dtype=None) -> Tensor
   self: grad.expand(self.sizes()).to(self.scalar_type()) / self.numel()
 
@@ -743,6 +747,10 @@
   self: evenly_distribute_backward(grad, self, result)
 
 - name: minimum(Tensor self, Tensor other) -> Tensor
+  self: grad.clone().masked_fill_(self >= other, 0)
+  other: grad.clone().masked_fill_(self < other, 0)
+
+- name: fmin(Tensor self, Tensor other) -> Tensor
   self: grad.clone().masked_fill_(self >= other, 0)
   other: grad.clone().masked_fill_(self < other, 0)
 
