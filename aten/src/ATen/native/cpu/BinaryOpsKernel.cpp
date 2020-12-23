@@ -520,8 +520,10 @@ void fmax_kernel(TensorIterator& iter) {
     AT_DISPATCH_FLOATING_TYPES_AND2(at::ScalarType::Half, at::ScalarType::BFloat16, iter.dtype(), "fmax_cpu", [&]() {
       cpu_kernel(iter,
         [](scalar_t a, scalar_t b) -> scalar_t {
-          if (a != a || b != b) {
-            return std::numeric_limits<scalar_t>::quiet_NaN();
+          if (b != b) {
+            return a;
+          } else if (a != a) {
+            return b;
           } else {
             return std::fmax(a, b);
           }
