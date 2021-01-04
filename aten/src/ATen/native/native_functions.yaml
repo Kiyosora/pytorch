@@ -6024,6 +6024,11 @@
     CPU: tril_indices_cpu
     CUDA: tril_indices_cuda
 
+- func: tril_values(Tensor input, int offset=0, *, ScalarType? dtype=long, Layout? layout=None, Device? device=None, bool? pin_memory=None) -> Tensor
+  use_c10_dispatcher: full
+  dispatch:
+    CPU: tril_values_cpu
+
 - func: triu_indices(int row, int col, int offset=0, *, ScalarType? dtype=long, Layout? layout=None, Device? device=None, bool? pin_memory=None) -> Tensor
   use_c10_dispatcher: full
   dispatch:

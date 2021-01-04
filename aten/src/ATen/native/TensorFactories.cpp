@@ -826,6 +826,19 @@ Tensor triu_indices_cpu(
   return result;
 }
 
+Tensor tril_values_cpu(
+        Tensor& input, int64_t offset, c10::optional<ScalarType> dtype_opt,
+        c10::optional<Layout> layout_opt, c10::optional<Device> device_opt, c10::optional<bool> pin_memory_opt) {
+    check_args(row, col, layout_opt);
+
+    int64_t row = self.sizes()[0];
+    int64_t col = self.sizes()[1];
+
+    Tensor indices = at::native::tril_indices_cpu(row, col, offset, dtype_opt, layout_opt, device_opt, pin_memory_opt);
+
+    return input[indices.unbind(0)];
+}
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ zeros ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Tensor zeros(IntArrayRef size, const TensorOptions& options) {
