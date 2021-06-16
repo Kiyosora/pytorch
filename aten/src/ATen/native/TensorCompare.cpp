@@ -9,7 +9,6 @@
 #include <ATen/native/TensorCompare.h>
 #include <ATen/NamedTensorUtils.h>
 #include <ATen/TensorIndexing.h>
-#include <ATen/native/TensorIterator.h>
 
 namespace at {
 namespace meta {
@@ -49,26 +48,16 @@ TORCH_META_FUNC2(isin, Scalar_Tensor) (
 
 TORCH_META_FUNC(isposinf) (const Tensor& self) {
   TORCH_CHECK(!self.is_complex(), "isposinf does not support complex inputs.");
-  TORCH_CHECK(maybe_get_output().defined() ? maybe_get_output().dtype().scalar_type() == at::kBool : true,
+  TORCH_CHECK(maybe_get_output().defined() ? maybe_get_output().dtype() == at::kBool : true,
               "isposinf does not support non-boolean outputs.");
-
-  if (c10::isIntegralType(self.scalar_type(), /*includeBool=*/true)) {
-    set_output({0}, TensorOptions(self.device()).dtype(ScalarType::Bool));
-  } else {
-    build_unary_op(maybe_get_output(), self);
-  }
+  build_unary_op(maybe_get_output(), self);
 }
 
 TORCH_META_FUNC(isneginf) (const Tensor& self) {
   TORCH_CHECK(!self.is_complex(), "isneginf does not support complex inputs.");
-  TORCH_CHECK(maybe_get_output().defined() ? maybe_get_output().dtype().scalar_type() == at::kBool : true,
+  TORCH_CHECK(maybe_get_output().defined() ? maybe_get_output().dtype() == at::kBool : true,
               "isneginf does not support non-boolean outputs.");
-
-  if (c10::isIntegralType(self.scalar_type(), /*includeBool=*/true)) {
-    set_output({0}, TensorOptions(self.device()).dtype(ScalarType::Bool));
-  } else {
-    build_unary_op(maybe_get_output(), self);
-  }
+  build_unary_op(maybe_get_output(), self);
 }
 
 } // namespace meta
@@ -765,11 +754,19 @@ TORCH_IMPL_FUNC(isin_Scalar_Tensor_out) (
 }
 
 TORCH_IMPL_FUNC(isposinf_out) (const Tensor& self, const Tensor& result) {
-  isposinf_stub(device_type(), *this);
+  if (c10::isIntegralType(self.scalar_type(), /*includeBool=*/true)) {
+    result.fill_(false);
+  } else {
+    isposinf_stub(device_type(), *this);
+  }
 }
 
 TORCH_IMPL_FUNC(isneginf_out) (const Tensor& self, const Tensor& result) {
-  isneginf_stub(device_type(), *this);
+  if (c10::isIntegralType(self.scalar_type(), /*includeBool=*/true)) {
+    result.fill_(false);
+  } else {
+    isneginf_stub(device_type(), *this);
+  }
 }
 
 } // namespace native
