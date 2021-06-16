@@ -50,14 +50,28 @@ TORCH_META_FUNC(isposinf) (const Tensor& self) {
   TORCH_CHECK(!self.is_complex(), "isposinf does not support complex inputs.");
   TORCH_CHECK(maybe_get_output().defined() ? maybe_get_output().dtype() == at::kBool : true,
               "isposinf does not support non-boolean outputs.");
-  set_output(self.sizes(), TensorOptions(self.device()).dtype(ScalarType::Bool));
+  build_unary_boolean_op(maybe_get_output(), self);
+  // const Tensor& result = maybe_get_output().defined() ? maybe_get_output() : at::empty_like(self, at::kBool, at::MemoryFormat::Preserve);
+  // build(TensorIteratorConfig()
+  //     .add_output(maybe_get_output())
+  //     // .add_output(c10::isIntegralType(self.scalar_type(), /*includeBool=*/true) ? result : maybe_get_output())
+  //     .add_input(self)
+  //     .check_all_same_dtype(false)
+  //     .declare_static_dtype_and_device(at::kBool, self.device()));
 }
 
 TORCH_META_FUNC(isneginf) (const Tensor& self) {
   TORCH_CHECK(!self.is_complex(), "isneginf does not support complex inputs.");
   TORCH_CHECK(maybe_get_output().defined() ? maybe_get_output().dtype() == at::kBool : true,
               "isneginf does not support non-boolean outputs.");
-  set_output(self.sizes(), TensorOptions(self.device()).dtype(ScalarType::Bool));
+  build_unary_boolean_op(maybe_get_output(), self);
+  // const Tensor& result = maybe_get_output().defined() ? maybe_get_output() : at::empty_like(self, at::kBool, at::MemoryFormat::Preserve);
+  // build(TensorIteratorConfig()
+  //     .add_output(maybe_get_output())
+  //     // .add_output(c10::isIntegralType(self.scalar_type(), /*includeBool=*/true) ? result : maybe_get_output())
+  //     .add_input(self)
+  //     .check_all_same_dtype(false)
+  //     .declare_static_dtype_and_device(at::kBool, self.device()));
 }
 
 } // namespace meta
@@ -757,7 +771,7 @@ TORCH_IMPL_FUNC(isposinf_out) (const Tensor& self, const Tensor& result) {
   if (c10::isIntegralType(self.scalar_type(), /*includeBool=*/true)) {
     result.fill_(false);
   } else {
-    isposinf_stub(self.device().type(), self, result);
+    isposinf_stub(device_type(), *this);
   }
 }
 
@@ -765,7 +779,7 @@ TORCH_IMPL_FUNC(isneginf_out) (const Tensor& self, const Tensor& result) {
   if (c10::isIntegralType(self.scalar_type(), /*includeBool=*/true)) {
     result.fill_(false);
   } else {
-    isneginf_stub(self.device().type(), self, result);
+    isneginf_stub(device_type(), *this);
   }
 }
 
