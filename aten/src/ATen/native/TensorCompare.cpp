@@ -50,14 +50,30 @@ TORCH_META_FUNC(isposinf) (const Tensor& self) {
   TORCH_CHECK(!self.is_complex(), "isposinf does not support complex inputs.");
   TORCH_CHECK(maybe_get_output().defined() ? maybe_get_output().dtype() == at::kBool : true,
               "isposinf does not support non-boolean outputs.");
-  build_inconsistent_unary_op(maybe_get_output(), self);
+
+  const Tensor& result = maybe_get_output().defined() ? maybe_get_output() : at::empty_like(self, at::kBool, at::MemoryFormat::Preserve);
+  build(TensorIteratorConfig()
+      .add_output(c10::isIntegralType(self.scalar_type(), /*includeBool=*/true) ? result : maybe_get_output())
+      .add_input(self)
+      .promote_inputs_to_common_dtype(true)
+      .cast_common_dtype_to_outputs(true)
+      .enforce_safe_casting_to_output(true)
+      .check_all_same_dtype(false));
 }
 
 TORCH_META_FUNC(isneginf) (const Tensor& self) {
   TORCH_CHECK(!self.is_complex(), "isneginf does not support complex inputs.");
   TORCH_CHECK(maybe_get_output().defined() ? maybe_get_output().dtype() == at::kBool : true,
               "isneginf does not support non-boolean outputs.");
-  build_inconsistent_unary_op(maybe_get_output(), self);
+
+  const Tensor& result = maybe_get_output().defined() ? maybe_get_output() : at::empty_like(self, at::kBool, at::MemoryFormat::Preserve);
+  build(TensorIteratorConfig()
+      .add_output(c10::isIntegralType(self.scalar_type(), /*includeBool=*/true) ? result : maybe_get_output())
+      .add_input(self)
+      .promote_inputs_to_common_dtype(true)
+      .cast_common_dtype_to_outputs(true)
+      .enforce_safe_casting_to_output(true)
+      .check_all_same_dtype(false));
 }
 
 } // namespace meta
