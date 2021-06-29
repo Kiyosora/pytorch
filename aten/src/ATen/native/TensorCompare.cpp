@@ -50,28 +50,28 @@ TORCH_META_FUNC(isposinf) (const Tensor& self) {
   TORCH_CHECK(!self.is_complex(), "isposinf does not support complex inputs.");
   TORCH_CHECK(maybe_get_output().defined() ? maybe_get_output().dtype() == at::kBool : true,
               "isposinf does not support non-boolean outputs.");
-
+  build_unary_boolean_op(maybe_get_output(), self);
   // const Tensor& result = maybe_get_output().defined() ? maybe_get_output() : at::empty_like(self, at::kBool, at::MemoryFormat::Preserve);
-  build(TensorIteratorConfig()
-      .add_output(maybe_get_output())
-      // .add_output(c10::isIntegralType(self.scalar_type(), /*includeBool=*/true) ? result : maybe_get_output())
-      .add_input(self)
-      .check_all_same_dtype(false)
-      .declare_static_dtype_and_device(at::kBool, self.device()));
+  // build(TensorIteratorConfig()
+  //     .add_output(maybe_get_output())
+  //     // .add_output(c10::isIntegralType(self.scalar_type(), /*includeBool=*/true) ? result : maybe_get_output())
+  //     .add_input(self)
+  //     .check_all_same_dtype(false)
+  //     .declare_static_dtype_and_device(at::kBool, self.device()));
 }
 
 TORCH_META_FUNC(isneginf) (const Tensor& self) {
   TORCH_CHECK(!self.is_complex(), "isneginf does not support complex inputs.");
   TORCH_CHECK(maybe_get_output().defined() ? maybe_get_output().dtype() == at::kBool : true,
               "isneginf does not support non-boolean outputs.");
-
+  build_unary_boolean_op(maybe_get_output(), self);
   // const Tensor& result = maybe_get_output().defined() ? maybe_get_output() : at::empty_like(self, at::kBool, at::MemoryFormat::Preserve);
-  build(TensorIteratorConfig()
-      .add_output(maybe_get_output())
-      // .add_output(c10::isIntegralType(self.scalar_type(), /*includeBool=*/true) ? result : maybe_get_output())
-      .add_input(self)
-      .check_all_same_dtype(false)
-      .declare_static_dtype_and_device(at::kBool, self.device()));
+  // build(TensorIteratorConfig()
+  //     .add_output(maybe_get_output())
+  //     // .add_output(c10::isIntegralType(self.scalar_type(), /*includeBool=*/true) ? result : maybe_get_output())
+  //     .add_input(self)
+  //     .check_all_same_dtype(false)
+  //     .declare_static_dtype_and_device(at::kBool, self.device()));
 }
 
 } // namespace meta
